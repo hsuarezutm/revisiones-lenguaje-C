@@ -33,6 +33,13 @@ jobs:
       - name: Confirmar existencia de index.html
         run: test -f web/index.html && echo "✅ index.html existe" || (echo "❌ index.html no encontrado" && exit 1)
 
+      - name: Mostrar resumen de publicación
+        run: |
+          echo "Archivos en ./web:"
+          ls -lh web/
+          echo "Contenido de index.html:"
+          head -n 20 web/index.html
+
       - name: Configurar Git
         run: |
           git config --global user.name "github-actions[bot]"
