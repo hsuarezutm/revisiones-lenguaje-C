@@ -1,4 +1,5 @@
 import os
+import shutil
 
 html = '''<!DOCTYPE html>
 <html lang="es">
@@ -54,6 +55,12 @@ html = '''<!DOCTYPE html>
       --fg: #eee;
       --card-bg: #1e1e1e;
     }
+    .grupo {
+      margin-top: 2em;
+    }
+    .grupo h1 {
+      border-bottom: 2px solid #ccc;
+    }
   </style>
 </head>
 <body id="body">
@@ -61,22 +68,39 @@ html = '''<!DOCTYPE html>
   <h1>📋 Informes de revisión</h1>
 '''
 
-# Verificar si hay informes
+# Verificar informes
 informes = [f for f in os.listdir("resultados") if f.endswith(".txt")]
+os.makedirs("web/informes", exist_ok=True)
 
-if informes:
-    for archivo in informes:
-        nombre = archivo.replace(".txt", "")
-        with open(f"resultados/{archivo}", "r", encoding="utf-8") as f:
-            contenido = f.read()
-        html += f'''
-        <div class="tarjeta">
-          <h2>{nombre}.c</h2>
-          <pre>{contenido}</pre>
-          <a class="descargar" href="../resultados/{archivo}" download>Descargar informe</a>
-        </div>
-        '''
-else:
+exitosos = []
+fallidos = []
+
+for archivo in informes:
+    shutil.copy(f"resultados/{archivo}", f"web/informes/{archivo}")
+    with open(f"resultados/{archivo}", "r", encoding="utf-8") as f:
+        contenido = f.read()
+    nombre = archivo.replace(".txt", "")
+    tarjeta = f'''
+    <div class="tarjeta">
+      <h2>{nombre}.c</h2>
+      <pre>{contenido}</pre>
+      <a class="descargar" href="informes/{archivo}" download>Descargar informe</a>
+    </div>
+    '''
+    if "✅ Compilación exitosa" in contenido:
+        exitosos.append(tarjeta)
+    else:
+        fallidos.append(tarjeta)
+
+if exitosos:
+    html += f'<div class="grupo"><h1>✅ Exitosos ({len(exitosos)})</h1>'
+    html += ''.join(exitosos) + '</div>'
+
+if fallidos:
+    html += f'<div class="grupo"><h1>❌ Con errores ({len(fallidos)})</h1>'
+    html += ''.join(fallidos) + '</div>'
+
+if not informes:
     html += "<p>No se encontraron informes en la carpeta <code>resultados/</code>.</p>"
 
 html += '</body></html>'
