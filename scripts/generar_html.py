@@ -201,7 +201,7 @@ if errores:
 if not informes:
     html += "<p>No se encontraron informes en la carpeta <code>resultados/</code>.</p>"
 
-# Script final
+# Cierre con script funcional
 html += '''
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -221,4 +221,14 @@ function filtrarEstado(estado) {
   const tarjetas = document.querySelectorAll(".card");
   tarjetas.forEach(t => {
     const tipo = t.getAttribute("data-estado") || "";
-    t.style.display = (estado === "" || tipo === estado) ? "block" : "none
+    t.style.display = (estado === "" || tipo === estado) ? "block" : "none";
+  });
+}
+</script>
+</body></html>
+'''
+
+# Guardar archivo
+os.makedirs("web", exist_ok=True)
+with open("web/index.html", "w", encoding="utf-8") as f:
+    f.write(html)
