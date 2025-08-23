@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Instalar Python
-        run: sudo apt-get install -y python3
+        run: sudo apt-get install -y python3 zip
 
       - name: Dar permisos al script
         run: chmod +x scripts/revisar.sh
@@ -28,17 +28,10 @@ jobs:
         run: ls -l web/
 
       - name: Mostrar contenido de index.html
-        run: cat web/index.html
+        run: head -n 20 web/index.html
 
       - name: Confirmar existencia de index.html
         run: test -f web/index.html && echo "✅ index.html existe" || (echo "❌ index.html no encontrado" && exit 1)
-
-      - name: Mostrar resumen de publicación
-        run: |
-          echo "Archivos en ./web:"
-          ls -lh web/
-          echo "Contenido de index.html:"
-          head -n 20 web/index.html
 
       - name: Configurar Git
         run: |
