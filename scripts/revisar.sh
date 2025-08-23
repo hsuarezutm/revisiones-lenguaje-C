@@ -10,8 +10,11 @@ for archivo in programas/*.c; do
 
     if [ $? -eq 0 ]; then
         echo "✅ Compilación exitosa" >> "$salida"
+    elif echo "$salida_compilacion" | grep -qi "warning"; then
+        echo "⚠️ Advertencias de compilación" >> "$salida"
+        echo "$salida_compilacion" >> "$salida"
     else
-        echo "❌ Error de compilación o advertencias" >> "$salida"
+        echo "❌ Error de compilación" >> "$salida"
         echo "$salida_compilacion" >> "$salida"
     fi
 done
