@@ -1,27 +1,39 @@
 import os
 import shutil
+import zipfile
 
 # Preparar carpetas
 informes = [f for f in os.listdir("resultados") if f.endswith(".txt")]
 os.makedirs("web/informes", exist_ok=True)
 
-# Clasificar informes
+# Copiar informes y crear ZIP
+with zipfile.ZipFile("web/informes.zip", "w") as zipf:
+    for archivo in informes:
+        src = f"resultados/{archivo}"
+        dst = f"web/informes/{archivo}"
+        shutil.copy(src, dst)
+        zipf.write(dst, arcname=archivo)
+
+# Clasificar
 exitosos = []
 fallidos = []
+tabla = ""
 
 for archivo in informes:
-    shutil.copy(f"resultados/{archivo}", f"web/informes/{archivo}")
     with open(f"resultados/{archivo}", "r", encoding="utf-8") as f:
         contenido = f.read()
     nombre = archivo.replace(".txt", "")
+    estado = "✅" if "✅ Compilación exitosa" in contenido else "❌"
+    fila = f"<tr><td>{nombre}.c</td><td>{estado}</td><td><a href='informes/{archivo}' download>📥</a></td></tr>"
+    tabla += fila
     tarjeta = f'''
-    <div class="card">
+    <div class="card" data-nombre="{nombre}">
       <h2>{nombre}.c</h2>
       <pre>{contenido}</pre>
       <a class="download" href="informes/{archivo}" download>📥 Descargar informe</a>
     </div>
     '''
-    if "✅ Compilación exitosa" in contenido:
+    if estado == "✅":
         exitosos.append(tarjeta)
     else:
         fallidos.append(tarjeta)
@@ -76,7 +88,7 @@ html = f'''<!DOCTYPE html>
       border-radius: 5px;
       cursor: pointer;
     }}
-    .stats {{
+    .stats, .group {{
       background: var(--card-bg);
       padding: 1em;
       border-radius: 8px;
@@ -85,12 +97,6 @@ html = f'''<!DOCTYPE html>
     }}
     .stats p {{
       margin: 0.5em 0;
-    }}
-    .group {{
-      margin-top: 2em;
-    }}
-    .group h2 {{
-      border-bottom: 2px solid var(--accent);
     }}
     .card {{
       background: var(--card-bg);
@@ -112,6 +118,28 @@ html = f'''<!DOCTYPE html>
       border-radius: 4px;
       text-decoration: none;
     }}
+    .search {{
+      margin-bottom: 1em;
+    }}
+    input[type="text"] {{
+      padding: 0.5em;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }}
+    table {{
+      width: 100%;
+      border-collapse: collapse;
+    }}
+    th, td {{
+      padding: 0.5em;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }}
+    .actions {{
+      margin-top: 1em;
+    }}
   </style>
 </head>
 <body id="body">
@@ -126,6 +154,22 @@ html = f'''<!DOCTYPE html>
     <p>Compilaciones exitosas: <strong>{ok}</strong></p>
     <p>Errores detectados: <strong>{fail}</strong></p>
     <p>Porcentaje de éxito: <strong>{porcentaje}%</strong></p>
+    <div class="actions">
+      <a class="download" href="informes.zip" download>📦 Descargar todos (.zip)</a>
+      <button class="download" onclick="window.print()">🧾 Exportar como PDF</button>
+    </div>
+  </div>
+
+  <div class="search">
+    <input type="text" id="busqueda" placeholder="🔍 Buscar por nombre..." onkeyup="filtrar()">
+  </div>
+
+  <div class="group">
+    <h2>📋 Tabla resumen</h2>
+    <table>
+      <thead><tr><th>Archivo</th><th>Estado</th><th>Informe</th></tr></thead>
+      <tbody>{tabla}</tbody>
+    </table>
   </div>
 '''
 
@@ -137,7 +181,20 @@ if fallidos:
 if not informes:
     html += "<p>No se encontraron informes en la carpeta <code>resultados/</code>.</p>"
 
-html += '</body></html>'
+# Script de búsqueda
+html += '''
+<script>
+function filtrar() {
+  const texto = document.getElementById("busqueda").value.toLowerCase();
+  const tarjetas = document.querySelectorAll(".card");
+  tarjetas.forEach(t => {
+    const nombre = t.getAttribute("data-nombre").toLowerCase();
+    t.style.display = nombre.includes(texto) ? "block" : "none";
+  });
+}
+</script>
+</body></html>
+'''
 
 # Guardar archivo
 os.makedirs("web", exist_ok=True)
