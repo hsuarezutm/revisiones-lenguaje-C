@@ -1,0 +1,25 @@
+name: Revisar programas en C
+
+on:
+  push:
+    paths:
+      - 'programas/**.c'
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Dar permisos al script
+        run: chmod +x scripts/revisar.sh
+
+      - name: Ejecutar revisión
+        run: ./scripts/revisar.sh
+
+      - name: Subir informes como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: informes-c
+          path: resultados/
