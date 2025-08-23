@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Informe de Programas en C</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      transition: background 0.3s, color 0.3s;
+      background: var(--bg);
+      color: var(--fg);
+    }
+    .tarjeta {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 1em;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 1em;
+    }
+    .tarjeta h2 { margin-top: 0; }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .descargar {
+      margin-top: 1em;
+      display: inline-block;
+      padding: 0.5em 1em;
+      background: #007acc;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .modo {
+      position: fixed;
+      top: 1em;
+      right: 1em;
+      background: #ccc;
+      border: none;
+      padding: 0.5em 1em;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    :root {
+      --bg: #f0f0f0;
+      --fg: #000;
+      --card-bg: #fff;
+    }
+    .oscuro {
+      --bg: #121212;
+      --fg: #eee;
+      --card-bg: #1e1e1e;
+    }
+  </style>
+</head>
+<body id="body">
+  <button class="modo" onclick="document.getElementById('body').classList.toggle('oscuro')">🌙/☀️</button>
+  <h1>📋 Informes de revisión</h1>
+
+        <div class="tarjeta">
+          <h2>otroerror.c</h2>
+          <pre>🔍 Revisando programas/otroerror.c...
+❌ Error de compilación o advertencias
+programas/otroerror.c: In function ‘main’:
+programas/otroerror.c:5:5: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘printf’
+    5 |     printf("x = %d\n", x);
+      |     ^~~~~~
+programas/otroerror.c:6:5: error: expected declaration specifiers before ‘return’
+    6 |     return 0;
+      |     ^~~~~~
+programas/otroerror.c:7:1: error: expected declaration specifiers before ‘}’ token
+    7 | }
+      | ^
+programas/otroerror.c:8: error: expected ‘{’ at end of input
+</pre>
+          <a class="descargar" href="../resultados/otroerror.txt" download>Descargar informe</a>
+        </div>
+        
+        <div class="tarjeta">
+          <h2>error.c</h2>
+          <pre>🔍 Revisando programas/error.c...
+❌ Error de compilación o advertencias
+programas/error.c: In function ‘main’:
+programas/error.c:5:5: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘printf’
+    5 |     printf("Valor de x: %d\n", x); scandf
+      |     ^~~~~~
+programas/error.c:5:36: error: ‘scandf’ undeclared (first use in this function); did you mean ‘scanf’?
+    5 |     printf("Valor de x: %d\n", x); scandf
+      |                                    ^~~~~~
+      |                                    scanf
+programas/error.c:5:36: note: each undeclared identifier is reported only once for each function it appears in
+programas/error.c:5:42: error: expected ‘;’ before ‘return’
+    5 |     printf("Valor de x: %d\n", x); scandf
+      |                                          ^
+      |                                          ;
+    6 |     return 0;
+      |     ~~~~~~                                
+programas/error.c:4:9: warning: unused variable ‘x’ [-Wunused-variable]
+    4 |     int x,t
+      |         ^
+</pre>
+          <a class="descargar" href="../resultados/error.txt" download>Descargar informe</a>
+        </div>
+        
+        <div class="tarjeta">
+          <h2>hola.c</h2>
+          <pre>🔍 Revisando programas/hola.c...
+✅ Compilación exitosa
+</pre>
+          <a class="descargar" href="../resultados/hola.txt" download>Descargar informe</a>
+        </div>
+        </body></html>
