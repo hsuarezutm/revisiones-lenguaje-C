@@ -1,0 +1,20 @@
+🔍 Revisando programas/error.c...
+❌ Error de compilación o advertencias
+programas/error.c: In function ‘main’:
+programas/error.c:5:5: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘printf’
+    5 |     printf("Valor de x: %d\n", x); scandf
+      |     ^~~~~~
+programas/error.c:5:36: error: ‘scandf’ undeclared (first use in this function); did you mean ‘scanf’?
+    5 |     printf("Valor de x: %d\n", x); scandf
+      |                                    ^~~~~~
+      |                                    scanf
+programas/error.c:5:36: note: each undeclared identifier is reported only once for each function it appears in
+programas/error.c:5:42: error: expected ‘;’ before ‘return’
+    5 |     printf("Valor de x: %d\n", x); scandf
+      |                                          ^
+      |                                          ;
+    6 |     return 0;
+      |     ~~~~~~                                
+programas/error.c:4:9: warning: unused variable ‘x’ [-Wunused-variable]
+    4 |     int x,t
+      |         ^

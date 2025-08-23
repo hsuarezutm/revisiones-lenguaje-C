@@ -52,15 +52,29 @@
       --fg: #eee;
       --card-bg: #1e1e1e;
     }
+    .grupo {
+      margin-top: 2em;
+    }
+    .grupo h1 {
+      border-bottom: 2px solid #ccc;
+    }
   </style>
 </head>
 <body id="body">
   <button class="modo" onclick="document.getElementById('body').classList.toggle('oscuro')">🌙/☀️</button>
   <h1>📋 Informes de revisión</h1>
-
-        <div class="tarjeta">
-          <h2>otroerror.c</h2>
-          <pre>🔍 Revisando programas/otroerror.c...
+<div class="grupo"><h1>✅ Exitosos (1)</h1>
+    <div class="tarjeta">
+      <h2>hola.c</h2>
+      <pre>🔍 Revisando programas/hola.c...
+✅ Compilación exitosa
+</pre>
+      <a class="descargar" href="informes/hola.txt" download>Descargar informe</a>
+    </div>
+    </div><div class="grupo"><h1>❌ Con errores (2)</h1>
+    <div class="tarjeta">
+      <h2>otroerror.c</h2>
+      <pre>🔍 Revisando programas/otroerror.c...
 ❌ Error de compilación o advertencias
 programas/otroerror.c:1:18: error: missing terminating > character
     1 | #include <stdio.h
@@ -77,12 +91,12 @@ programas/otroerror.c:7:1: error: expected declaration specifiers before ‘}’
       | ^
 programas/otroerror.c:8: error: expected ‘{’ at end of input
 </pre>
-          <a class="descargar" href="../resultados/otroerror.txt" download>Descargar informe</a>
-        </div>
-        
-        <div class="tarjeta">
-          <h2>error.c</h2>
-          <pre>🔍 Revisando programas/error.c...
+      <a class="descargar" href="informes/otroerror.txt" download>Descargar informe</a>
+    </div>
+    
+    <div class="tarjeta">
+      <h2>error.c</h2>
+      <pre>🔍 Revisando programas/error.c...
 ❌ Error de compilación o advertencias
 programas/error.c: In function ‘main’:
 programas/error.c:5:5: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘printf’
@@ -103,14 +117,6 @@ programas/error.c:4:9: warning: unused variable ‘x’ [-Wunused-variable]
     4 |     int x,t
       |         ^
 </pre>
-          <a class="descargar" href="../resultados/error.txt" download>Descargar informe</a>
-        </div>
-        
-        <div class="tarjeta">
-          <h2>hola.c</h2>
-          <pre>🔍 Revisando programas/hola.c...
-✅ Compilación exitosa
-</pre>
-          <a class="descargar" href="../resultados/hola.txt" download>Descargar informe</a>
-        </div>
-        </body></html>
+      <a class="descargar" href="informes/error.txt" download>Descargar informe</a>
+    </div>
+    </div></body></html>
