@@ -103,10 +103,10 @@
 
   <div class="stats">
     <h2>📊 Resumen estadístico</h2>
-    <p>Total de archivos revisados: <strong>2</strong></p>
-    <p>Compilaciones exitosas: <strong>1</strong></p>
+    <p>Total de archivos revisados: <strong>3</strong></p>
+    <p>Compilaciones exitosas: <strong>2</strong></p>
     <p>Errores detectados: <strong>1</strong></p>
-    <p>Porcentaje de éxito: <strong>50.0%</strong></p>
+    <p>Porcentaje de éxito: <strong>66.67%</strong></p>
     <div class="actions">
       <a class="download" href="informes.zip" download>📦 Descargar todos (.zip)</a>
       <button class="download" onclick="window.print()">🧾 Exportar como PDF</button>
@@ -121,10 +121,18 @@
     <h2>📋 Tabla resumen</h2>
     <table>
       <thead><tr><th>Archivo</th><th>Estado</th><th>Informe</th></tr></thead>
-      <tbody><tr><td>error.c</td><td>❌</td><td><a href='informes/error.txt' download>📥</a></td></tr><tr><td>hola.c</td><td>✅</td><td><a href='informes/hola.txt' download>📥</a></td></tr></tbody>
+      <tbody><tr><td>array.c</td><td>✅</td><td><a href='informes/array.txt' download>📥</a></td></tr><tr><td>error.c</td><td>❌</td><td><a href='informes/error.txt' download>📥</a></td></tr><tr><td>hola.c</td><td>✅</td><td><a href='informes/hola.txt' download>📥</a></td></tr></tbody>
     </table>
   </div>
 <div class="group"><h2>✅ Exitosos</h2>
+    <div class="card" data-nombre="array">
+      <h2>array.c</h2>
+      <pre>🔍 Revisando programas/array.c...
+✅ Compilación exitosa
+</pre>
+      <a class="download" href="informes/array.txt" download>📥 Descargar informe</a>
+    </div>
+    
     <div class="card" data-nombre="hola">
       <h2>hola.c</h2>
       <pre>🔍 Revisando programas/hola.c...
