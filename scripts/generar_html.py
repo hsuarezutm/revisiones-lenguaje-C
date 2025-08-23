@@ -20,24 +20,36 @@ tabla = ""
 
 for archivo in informes:
     with open(f"resultados/{archivo}", "r", encoding="utf-8") as f:
-        contenido = f.read()
+        contenido_raw = f.read()
+
     nombre = archivo.replace(".txt", "")
+    contenido = ""
+    for linea in contenido_raw.splitlines():
+        if "error:" in linea.lower():
+            contenido += f'<span class="error">{linea}</span>\n'
+        elif "warning:" in linea.lower():
+            contenido += f'<span class="warning">{linea}</span>\n'
+        else:
+            contenido += linea + "\n"
+
     tarjeta = f'''
-    <div class="card" data-estado="{contenido[:2]}">
+    <div class="card" data-estado="{contenido_raw[:2]}">
       <h2>{nombre}.c</h2>
       <pre>{contenido}</pre>
       <a class="download" href="informes/{archivo}" download>📥 Descargar informe</a>
     </div>
     '''
-    if "✅" in contenido:
+
+    if "✅" in contenido_raw:
         exitosos.append(tarjeta)
         estado = "✅"
-    elif "⚠️" in contenido:
+    elif "⚠️" in contenido_raw:
         advertencias.append(tarjeta)
         estado = "⚠️"
     else:
         errores.append(tarjeta)
         estado = "❌"
+
     fila = f"<tr><td>{nombre}.c</td><td>{estado}</td><td><a href='informes/{archivo}' download>📥</a></td></tr>"
     tabla += fila
 
@@ -109,6 +121,14 @@ html = f'''<!DOCTYPE html>
     pre {{
       white-space: pre-wrap;
       word-wrap: break-word;
+    }}
+    .error {{
+      color: red;
+      font-weight: bold;
+    }}
+    .warning {{
+      color: orange;
+      font-weight: bold;
     }}
     .download {{
       display: inline-block;
