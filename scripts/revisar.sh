@@ -1,4 +1,5 @@
 #!/bin/bash
+
 mkdir -p resultados
 
 for archivo in programas/*.c; do
@@ -6,7 +7,7 @@ for archivo in programas/*.c; do
     salida="resultados/${nombre}.txt"
     echo "🔍 Revisando $archivo..." > "$salida"
 
-    # Compilación con gcc, capturando errores y warnings
+    # Compilación con gcc, capturando errores y advertencias
     salida_compilacion=$(gcc -Wall -Wextra "$archivo" -o /dev/null 2>&1)
 
     if [ $? -eq 0 ]; then
@@ -16,4 +17,3 @@ for archivo in programas/*.c; do
         echo "$salida_compilacion" >> "$salida"
     fi
 done
-
