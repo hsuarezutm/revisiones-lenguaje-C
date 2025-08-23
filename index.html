@@ -48,9 +48,6 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 2em;
     }
-    .stats p {
-      margin: 0.5em 0;
-    }
     .card {
       background: var(--card-bg);
       padding: 1em;
@@ -71,7 +68,7 @@
       border-radius: 4px;
       text-decoration: none;
     }
-    .search {
+    .search, .filters {
       margin-bottom: 1em;
     }
     input[type="text"] {
@@ -80,6 +77,15 @@
       max-width: 400px;
       border: 1px solid #ccc;
       border-radius: 4px;
+    }
+    .filters button {
+      margin-right: 0.5em;
+      padding: 0.4em 0.8em;
+      border: none;
+      background: var(--accent);
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
     }
     table {
       width: 100%;
@@ -105,6 +111,7 @@
     <h2>📊 Resumen estadístico</h2>
     <p>Total de archivos revisados: <strong>3</strong></p>
     <p>Compilaciones exitosas: <strong>1</strong></p>
+    <p>Advertencias: <strong>0</strong></p>
     <p>Errores detectados: <strong>2</strong></p>
     <p>Porcentaje de éxito: <strong>33.33%</strong></p>
     <div class="actions">
@@ -114,7 +121,14 @@
   </div>
 
   <div class="search">
-    <input type="text" id="busqueda" placeholder="🔍 Buscar por nombre..." onkeyup="filtrar()">
+    <input type="text" id="busqueda" placeholder="🔍 Buscar por nombre...">
+  </div>
+
+  <div class="filters">
+    <button onclick="filtrarEstado('')">Todos</button>
+    <button onclick="filtrarEstado('✅')">Exitosos</button>
+    <button onclick="filtrarEstado('⚠️')">Advertencias</button>
+    <button onclick="filtrarEstado('❌')">Errores</button>
   </div>
 
   <div class="group">
@@ -124,16 +138,16 @@
       <tbody><tr><td>array.c</td><td>❌</td><td><a href='informes/array.txt' download>📥</a></td></tr><tr><td>error.c</td><td>❌</td><td><a href='informes/error.txt' download>📥</a></td></tr><tr><td>hola.c</td><td>✅</td><td><a href='informes/hola.txt' download>📥</a></td></tr></tbody>
     </table>
   </div>
-<div class="group"><h2>✅ Exitosos</h2>
-    <div class="card" data-nombre="hola">
+<div class="group"><h2 id="exitosos">✅ Exitosos</h2>
+    <div class="card" data-nombre="hola" data-estado="🔍 ">
       <h2>hola.c</h2>
       <pre>🔍 Revisando programas/hola.c...
 ✅ Compilación exitosa
 </pre>
       <a class="download" href="informes/hola.txt" download>📥 Descargar informe</a>
     </div>
-    </div><div class="group"><h2>❌ Con errores</h2>
-    <div class="card" data-nombre="array">
+    </div><div class="group"><h2 id="errores">❌ Errores</h2>
+    <div class="card" data-nombre="array" data-estado="🔍 ">
       <h2>array.c</h2>
       <pre>🔍 Revisando programas/array.c...
 ❌ Error de compilación
@@ -148,10 +162,10 @@ programas/array.c:7:1: error: expected declaration or statement at end of input
       <a class="download" href="informes/array.txt" download>📥 Descargar informe</a>
     </div>
     
-    <div class="card" data-nombre="error">
+    <div class="card" data-nombre="error" data-estado="🔍 ">
       <h2>error.c</h2>
       <pre>🔍 Revisando programas/error.c...
-⚠️ Advertencias de compilación
+❌ Error de compilación
 programas/error.c: In function ‘main’:
 programas/error.c:4:11: error: expected expression before ‘,’ token
     4 |     int x=,t;
@@ -164,12 +178,24 @@ programas/error.c:4:12: warning: unused variable ‘t’ [-Wunused-variable]
     </div>
     </div>
 <script>
-function filtrar() {
-  const texto = document.getElementById("busqueda").value.toLowerCase();
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("busqueda");
+  const tarjetas = document.querySelectorAll(".card");
+
+  input.addEventListener("input", function () {
+    const texto = input.value.toLowerCase();
+    tarjetas.forEach(t => {
+      const nombre = t.getAttribute("data-nombre")?.toLowerCase() || "";
+      t.style.display = nombre.includes(texto) ? "block" : "none";
+    });
+  });
+});
+
+function filtrarEstado(estado) {
   const tarjetas = document.querySelectorAll(".card");
   tarjetas.forEach(t => {
-    const nombre = t.getAttribute("data-nombre").toLowerCase();
-    t.style.display = nombre.includes(texto) ? "block" : "none";
+    const tipo = t.getAttribute("data-estado") || "";
+    t.style.display = (estado === "" || tipo === estado) ? "block" : "none";
   });
 }
 </script>

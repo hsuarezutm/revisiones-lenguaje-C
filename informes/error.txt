@@ -1,5 +1,5 @@
 🔍 Revisando programas/error.c...
-⚠️ Advertencias de compilación
+❌ Error de compilación
 programas/error.c: In function ‘main’:
 programas/error.c:4:11: error: expected expression before ‘,’ token
     4 |     int x=,t;
