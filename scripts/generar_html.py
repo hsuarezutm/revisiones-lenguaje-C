@@ -15,33 +15,37 @@ with zipfile.ZipFile("web/informes.zip", "w") as zipf:
         zipf.write(dst, arcname=archivo)
 
 # Clasificar
-exitosos = []
-fallidos = []
+exitosos, advertencias, errores = [], [], []
 tabla = ""
 
 for archivo in informes:
     with open(f"resultados/{archivo}", "r", encoding="utf-8") as f:
         contenido = f.read()
     nombre = archivo.replace(".txt", "")
-    estado = "✅" if "✅ Compilación exitosa" in contenido else "❌"
-    fila = f"<tr><td>{nombre}.c</td><td>{estado}</td><td><a href='informes/{archivo}' download>📥</a></td></tr>"
-    tabla += fila
     tarjeta = f'''
-    <div class="card" data-nombre="{nombre}">
+    <div class="card" data-nombre="{nombre}" data-estado="{contenido[:2]}">
       <h2>{nombre}.c</h2>
       <pre>{contenido}</pre>
       <a class="download" href="informes/{archivo}" download>📥 Descargar informe</a>
     </div>
     '''
-    if estado == "✅":
+    if "✅" in contenido:
         exitosos.append(tarjeta)
+        estado = "✅"
+    elif "⚠️" in contenido:
+        advertencias.append(tarjeta)
+        estado = "⚠️"
     else:
-        fallidos.append(tarjeta)
+        errores.append(tarjeta)
+        estado = "❌"
+    fila = f"<tr><td>{nombre}.c</td><td>{estado}</td><td><a href='informes/{archivo}' download>📥</a></td></tr>"
+    tabla += fila
 
 # Estadísticas
 total = len(informes)
 ok = len(exitosos)
-fail = len(fallidos)
+warn = len(advertencias)
+fail = len(errores)
 porcentaje = round((ok / total) * 100, 2) if total else 0
 
 # HTML base
@@ -95,9 +99,6 @@ html = f'''<!DOCTYPE html>
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 2em;
     }}
-    .stats p {{
-      margin: 0.5em 0;
-    }}
     .card {{
       background: var(--card-bg);
       padding: 1em;
@@ -118,7 +119,7 @@ html = f'''<!DOCTYPE html>
       border-radius: 4px;
       text-decoration: none;
     }}
-    .search {{
+    .search, .filters {{
       margin-bottom: 1em;
     }}
     input[type="text"] {{
@@ -127,6 +128,15 @@ html = f'''<!DOCTYPE html>
       max-width: 400px;
       border: 1px solid #ccc;
       border-radius: 4px;
+    }}
+    .filters button {{
+      margin-right: 0.5em;
+      padding: 0.4em 0.8em;
+      border: none;
+      background: var(--accent);
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
     }}
     table {{
       width: 100%;
@@ -152,6 +162,7 @@ html = f'''<!DOCTYPE html>
     <h2>📊 Resumen estadístico</h2>
     <p>Total de archivos revisados: <strong>{total}</strong></p>
     <p>Compilaciones exitosas: <strong>{ok}</strong></p>
+    <p>Advertencias: <strong>{warn}</strong></p>
     <p>Errores detectados: <strong>{fail}</strong></p>
     <p>Porcentaje de éxito: <strong>{porcentaje}%</strong></p>
     <div class="actions">
@@ -161,7 +172,14 @@ html = f'''<!DOCTYPE html>
   </div>
 
   <div class="search">
-    <input type="text" id="busqueda" placeholder="🔍 Buscar por nombre..." onkeyup="filtrar()">
+    <input type="text" id="busqueda" placeholder="🔍 Buscar por nombre...">
+  </div>
+
+  <div class="filters">
+    <button onclick="filtrarEstado('')">Todos</button>
+    <button onclick="filtrarEstado('✅')">Exitosos</button>
+    <button onclick="filtrarEstado('⚠️')">Advertencias</button>
+    <button onclick="filtrarEstado('❌')">Errores</button>
   </div>
 
   <div class="group">
@@ -175,28 +193,32 @@ html = f'''<!DOCTYPE html>
 
 # Tarjetas por grupo
 if exitosos:
-    html += '<div class="group"><h2>✅ Exitosos</h2>' + ''.join(exitosos) + '</div>'
-if fallidos:
-    html += '<div class="group"><h2>❌ Con errores</h2>' + ''.join(fallidos) + '</div>'
+    html += '<div class="group"><h2 id="exitosos">✅ Exitosos</h2>' + ''.join(exitosos) + '</div>'
+if advertencias:
+    html += '<div class="group"><h2 id="advertencias">⚠️ Advertencias</h2>' + ''.join(advertencias) + '</div>'
+if errores:
+    html += '<div class="group"><h2 id="errores">❌ Errores</h2>' + ''.join(errores) + '</div>'
 if not informes:
     html += "<p>No se encontraron informes en la carpeta <code>resultados/</code>.</p>"
 
-# Script de búsqueda
+# Script final
 html += '''
 <script>
-function filtrar() {
-  const texto = document.getElementById("busqueda").value.toLowerCase();
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("busqueda");
+  const tarjetas = document.querySelectorAll(".card");
+
+  input.addEventListener("input", function () {
+    const texto = input.value.toLowerCase();
+    tarjetas.forEach(t => {
+      const nombre = t.getAttribute("data-nombre")?.toLowerCase() || "";
+      t.style.display = nombre.includes(texto) ? "block" : "none";
+    });
+  });
+});
+
+function filtrarEstado(estado) {
   const tarjetas = document.querySelectorAll(".card");
   tarjetas.forEach(t => {
-    const nombre = t.getAttribute("data-nombre").toLowerCase();
-    t.style.display = nombre.includes(texto) ? "block" : "none";
-  });
-}
-</script>
-</body></html>
-'''
-
-# Guardar archivo
-os.makedirs("web", exist_ok=True)
-with open("web/index.html", "w", encoding="utf-8") as f:
-    f.write(html)
+    const tipo = t.getAttribute("data-estado") || "";
+    t.style.display = (estado === "" || tipo === estado) ? "block" : "none
