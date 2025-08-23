@@ -3,5 +3,5 @@
 int main()
 {
 int i[]={0};
-return (0);
+return (0)
 }
