@@ -136,17 +136,14 @@
     <div class="card" data-nombre="array">
       <h2>array.c</h2>
       <pre>🔍 Revisando programas/array.c...
-⚠️ Advertencias de compilación
+❌ Error de compilación
 programas/array.c: In function ‘main’:
-programas/array.c:6:11: error: expected ‘;’ before ‘}’ token
-    6 | return (0)
-      |           ^
-      |           ;
+programas/array.c:5:7: error: expected expression before ‘=’ token
+    5 | int i[={0}
+      |       ^
+programas/array.c:7:1: error: expected declaration or statement at end of input
     7 | }
-      | ~          
-programas/array.c:5:5: warning: unused variable ‘i’ [-Wunused-variable]
-    5 | int i[]={0};
-      |     ^
+      | ^
 </pre>
       <a class="download" href="informes/array.txt" download>📥 Descargar informe</a>
     </div>
