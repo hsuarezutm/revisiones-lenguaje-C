@@ -2,8 +2,8 @@
 ❌ Error de compilación
 programas/error.c: In function ‘main’:
 programas/error.c:4:11: error: expected expression before ‘,’ token
-    4 |     int x=,t;
+    4 |     int x=,t
       |           ^
-programas/error.c:4:12: warning: unused variable ‘t’ [-Wunused-variable]
-    4 |     int x=,t;
-      |            ^
+programas/error.c:4:9: warning: unused variable ‘x’ [-Wunused-variable]
+    4 |     int x=,t
+      |         ^
