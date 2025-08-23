@@ -1,4 +1,4 @@
-name: Revisar programas en C
+name: Revisar y publicar
 
 on:
   push:
@@ -9,17 +9,22 @@ jobs:
   revisar:
     runs-on: ubuntu-latest
     steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Dar permisos al script
+      - name: Instalar Python
+        run: sudo apt-get install python3
+
+      - name: Dar permisos
         run: chmod +x scripts/revisar.sh
 
       - name: Ejecutar revisión
         run: ./scripts/revisar.sh
 
-      - name: Subir informes como artefacto
-        uses: actions/upload-artifact@v4
+      - name: Generar página web
+        run: python3 scripts/generar_html.py
+
+      - name: Publicar en GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: informes-c
-          path: resultados/
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./web
