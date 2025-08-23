@@ -9,26 +9,29 @@ jobs:
   revisar:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
 
       - name: Instalar Python
-        run: sudo apt-get install python3
+        run: sudo apt-get install -y python3
 
-      - name: Dar permisos
+      - name: Dar permisos al script
         run: chmod +x scripts/revisar.sh
 
       - name: Ejecutar revisión
         run: ./scripts/revisar.sh
 
-           - name: Generar página web
+      - name: Generar página web
         run: python3 scripts/generar_html.py
 
-        - name: Verificar contenido de la carpeta web
-  run: ls -l web/
+      - name: Verificar contenido de la carpeta web
+        run: ls -l web/
 
-- name: Mostrar contenido de index.html
-  run: cat web/index.html
+      - name: Mostrar contenido de index.html
+        run: cat web/index.html
 
+      - name: Confirmar existencia de index.html
+        run: test -f web/index.html && echo "✅ index.html existe" || (echo "❌ index.html no encontrado" && exit 1)
 
       - name: Configurar Git
         run: |
