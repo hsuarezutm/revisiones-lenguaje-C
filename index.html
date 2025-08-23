@@ -2,99 +2,117 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Informe de Programas en C</title>
+  <title>Dashboard de Revisión</title>
   <style>
+    :root {
+      --bg: #f5f7fa;
+      --fg: #222;
+      --card-bg: #fff;
+      --accent: #007acc;
+    }
+    .dark {
+      --bg: #121212;
+      --fg: #eee;
+      --card-bg: #1e1e1e;
+      --accent: #00bcd4;
+    }
     body {
-      font-family: sans-serif;
-      padding: 2em;
-      transition: background 0.3s, color 0.3s;
       background: var(--bg);
       color: var(--fg);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2em;
+      transition: background 0.3s, color 0.3s;
     }
-    .tarjeta {
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2em;
+    }
+    h1 {
+      margin: 0;
+    }
+    .toggle {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .stats {
       background: var(--card-bg);
-      border-radius: 8px;
       padding: 1em;
+      border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 2em;
+    }
+    .stats p {
+      margin: 0.5em 0;
+    }
+    .group {
+      margin-top: 2em;
+    }
+    .group h2 {
+      border-bottom: 2px solid var(--accent);
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
       margin-bottom: 1em;
     }
-    .tarjeta h2 { margin-top: 0; }
     pre {
       white-space: pre-wrap;
       word-wrap: break-word;
     }
-    .descargar {
-      margin-top: 1em;
+    .download {
       display: inline-block;
-      padding: 0.5em 1em;
-      background: #007acc;
+      margin-top: 1em;
+      background: var(--accent);
       color: white;
+      padding: 0.5em 1em;
       border-radius: 4px;
       text-decoration: none;
-    }
-    .modo {
-      position: fixed;
-      top: 1em;
-      right: 1em;
-      background: #ccc;
-      border: none;
-      padding: 0.5em 1em;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    :root {
-      --bg: #f0f0f0;
-      --fg: #000;
-      --card-bg: #fff;
-    }
-    .oscuro {
-      --bg: #121212;
-      --fg: #eee;
-      --card-bg: #1e1e1e;
-    }
-    .grupo {
-      margin-top: 2em;
-    }
-    .grupo h1 {
-      border-bottom: 2px solid #ccc;
     }
   </style>
 </head>
 <body id="body">
-  <button class="modo" onclick="document.getElementById('body').classList.toggle('oscuro')">🌙/☀️</button>
-  <h1>📋 Informes de revisión</h1>
-<div class="grupo"><h1>✅ Exitosos (1)</h1>
-    <div class="tarjeta">
+  <header>
+    <h1>📋 Dashboard de revisión</h1>
+    <button class="toggle" onclick="document.getElementById('body').classList.toggle('dark')">🌙/☀️</button>
+  </header>
+
+  <div class="stats">
+    <h2>📊 Resumen estadístico</h2>
+    <p>Total de archivos revisados: <strong>2</strong></p>
+    <p>Compilaciones exitosas: <strong>1</strong></p>
+    <p>Errores detectados: <strong>1</strong></p>
+    <p>Porcentaje de éxito: <strong>50.0%</strong></p>
+  </div>
+<div class="group"><h2>✅ Exitosos</h2>
+    <div class="card">
       <h2>hola.c</h2>
       <pre>🔍 Revisando programas/hola.c...
 ✅ Compilación exitosa
 </pre>
-      <a class="descargar" href="informes/hola.txt" download>Descargar informe</a>
+      <a class="download" href="informes/hola.txt" download>📥 Descargar informe</a>
     </div>
-    </div><div class="grupo"><h1>❌ Con errores (1)</h1>
-    <div class="tarjeta">
+    </div><div class="group"><h2>❌ Con errores</h2>
+    <div class="card">
       <h2>error.c</h2>
       <pre>🔍 Revisando programas/error.c...
 ❌ Error de compilación o advertencias
 programas/error.c: In function ‘main’:
-programas/error.c:5:5: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘printf’
-    5 |     printf("Valor de x: %d\n", x); scandf
-      |     ^~~~~~
-programas/error.c:5:36: error: ‘scandf’ undeclared (first use in this function); did you mean ‘scanf’?
-    5 |     printf("Valor de x: %d\n", x); scandf
-      |                                    ^~~~~~
-      |                                    scanf
-programas/error.c:5:36: note: each undeclared identifier is reported only once for each function it appears in
-programas/error.c:5:42: error: expected ‘;’ before ‘return’
-    5 |     printf("Valor de x: %d\n", x); scandf
-      |                                          ^
-      |                                          ;
-    6 |     return 0;
-      |     ~~~~~~                                
-programas/error.c:4:9: warning: unused variable ‘x’ [-Wunused-variable]
-    4 |     int x,t
-      |         ^
+programas/error.c:4:11: error: expected expression before ‘,’ token
+    4 |     int x=,t;
+      |           ^
+programas/error.c:4:12: warning: unused variable ‘t’ [-Wunused-variable]
+    4 |     int x=,t;
+      |            ^
 </pre>
-      <a class="descargar" href="informes/error.txt" download>Descargar informe</a>
+      <a class="download" href="informes/error.txt" download>📥 Descargar informe</a>
     </div>
     </div></body></html>
