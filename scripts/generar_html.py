@@ -23,7 +23,7 @@ for archivo in informes:
         contenido = f.read()
     nombre = archivo.replace(".txt", "")
     tarjeta = f'''
-    <div class="card" data-nombre="{nombre}" data-estado="{contenido[:2]}">
+    <div class="card" data-estado="{contenido[:2]}">
       <h2>{nombre}.c</h2>
       <pre>{contenido}</pre>
       <a class="download" href="informes/{archivo}" download>📥 Descargar informe</a>
@@ -119,25 +119,6 @@ html = f'''<!DOCTYPE html>
       border-radius: 4px;
       text-decoration: none;
     }}
-    .search, .filters {{
-      margin-bottom: 1em;
-    }}
-    input[type="text"] {{
-      padding: 0.5em;
-      width: 100%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }}
-    .filters button {{
-      margin-right: 0.5em;
-      padding: 0.4em 0.8em;
-      border: none;
-      background: var(--accent);
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-    }}
     table {{
       width: 100%;
       border-collapse: collapse;
@@ -171,17 +152,6 @@ html = f'''<!DOCTYPE html>
     </div>
   </div>
 
-  <div class="search">
-    <input type="text" id="busqueda" placeholder="🔍 Buscar por nombre...">
-  </div>
-
-  <div class="filters">
-    <button onclick="filtrarEstado('')">Todos</button>
-    <button onclick="filtrarEstado('✅')">Exitosos</button>
-    <button onclick="filtrarEstado('⚠️')">Advertencias</button>
-    <button onclick="filtrarEstado('❌')">Errores</button>
-  </div>
-
   <div class="group">
     <h2>📋 Tabla resumen</h2>
     <table>
@@ -193,40 +163,15 @@ html = f'''<!DOCTYPE html>
 
 # Tarjetas por grupo
 if exitosos:
-    html += '<div class="group"><h2 id="exitosos">✅ Exitosos</h2>' + ''.join(exitosos) + '</div>'
+    html += '<div class="group"><h2>✅ Exitosos</h2>' + ''.join(exitosos) + '</div>'
 if advertencias:
-    html += '<div class="group"><h2 id="advertencias">⚠️ Advertencias</h2>' + ''.join(advertencias) + '</div>'
+    html += '<div class="group"><h2>⚠️ Advertencias</h2>' + ''.join(advertencias) + '</div>'
 if errores:
-    html += '<div class="group"><h2 id="errores">❌ Errores</h2>' + ''.join(errores) + '</div>'
+    html += '<div class="group"><h2>❌ Errores</h2>' + ''.join(errores) + '</div>'
 if not informes:
     html += "<p>No se encontraron informes en la carpeta <code>resultados/</code>.</p>"
 
-# Cierre con script funcional
-html += '''
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const input = document.getElementById("busqueda");
-  const tarjetas = document.querySelectorAll(".card");
-
-  input.addEventListener("input", function () {
-    const texto = input.value.toLowerCase();
-    tarjetas.forEach(t => {
-      const nombre = t.getAttribute("data-nombre")?.toLowerCase() || "";
-      t.style.display = nombre.includes(texto) ? "block" : "none";
-    });
-  });
-});
-
-function filtrarEstado(estado) {
-  const tarjetas = document.querySelectorAll(".card");
-  tarjetas.forEach(t => {
-    const tipo = t.getAttribute("data-estado") || "";
-    t.style.display = (estado === "" || tipo === estado) ? "block" : "none";
-  });
-}
-</script>
-</body></html>
-'''
+html += '</body></html>'
 
 # Guardar archivo
 os.makedirs("web", exist_ok=True)
