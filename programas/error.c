@@ -2,6 +2,6 @@
 
 int main() {
     int x,t
-    printf("Valor de x: %d\n", x);
+    printf("Valor de x: %d\n", x); scandf
     return 0;
 }
