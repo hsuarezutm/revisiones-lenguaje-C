@@ -1,2 +1,12 @@
 🔍 Revisando programas/array.c...
-✅ Compilación exitosa
+⚠️ Advertencias de compilación
+programas/array.c: In function ‘main’:
+programas/array.c:6:11: error: expected ‘;’ before ‘}’ token
+    6 | return (0)
+      |           ^
+      |           ;
+    7 | }
+      | ~          
+programas/array.c:5:5: warning: unused variable ‘i’ [-Wunused-variable]
+    5 | int i[]={0};
+      |     ^
