@@ -1,5 +1,8 @@
 🔍 Revisando programas/array.c...
 ❌ Error de compilación
+programas/array.c:1:20: warning: extra tokens at end of #include directive
+    1 | #include <stdio.h> pp
+      |                    ^~
 programas/array.c: In function ‘main’:
 programas/array.c:5:7: error: expected expression before ‘=’ token
     5 | int i[={0}

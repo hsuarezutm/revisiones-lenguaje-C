@@ -113,7 +113,7 @@
     <h2>📋 Tabla resumen</h2>
     <table>
       <thead><tr><th>Archivo</th><th>Estado</th><th>Informe</th></tr></thead>
-      <tbody><tr><td>array.c</td><td>❌</td><td><a href='informes/array.txt' download>📥</a></td></tr><tr><td>error.c</td><td>❌</td><td><a href='informes/error.txt' download>📥</a></td></tr><tr><td>hola.c</td><td>✅</td><td><a href='informes/hola.txt' download>📥</a></td></tr></tbody>
+      <tbody><tr><td>error.c</td><td>❌</td><td><a href='informes/error.txt' download>📥</a></td></tr><tr><td>hola.c</td><td>✅</td><td><a href='informes/hola.txt' download>📥</a></td></tr><tr><td>array.c</td><td>❌</td><td><a href='informes/array.txt' download>📥</a></td></tr></tbody>
     </table>
   </div>
 <div class="group"><h2>✅ Exitosos</h2>
@@ -126,9 +126,27 @@
     </div>
     </div><div class="group"><h2>❌ Errores</h2>
     <div class="card" data-estado="🔍 ">
+      <h2>error.c</h2>
+      <pre>🔍 Revisando programas/error.c...
+❌ Error de compilación
+programas/error.c: In function ‘main’:
+<span class="error">programas/error.c:4:11: error: expected expression before ‘,’ token</span>
+    4 |     int x=,t
+      |           ^
+<span class="warning">programas/error.c:4:9: warning: unused variable ‘x’ [-Wunused-variable]</span>
+    4 |     int x=,t
+      |         ^
+</pre>
+      <a class="download" href="informes/error.txt" download>📥 Descargar informe</a>
+    </div>
+    
+    <div class="card" data-estado="🔍 ">
       <h2>array.c</h2>
       <pre>🔍 Revisando programas/array.c...
 ❌ Error de compilación
+<span class="warning">programas/array.c:1:20: warning: extra tokens at end of #include directive</span>
+    1 | #include <stdio.h> pp
+      |                    ^~
 programas/array.c: In function ‘main’:
 <span class="error">programas/array.c:5:7: error: expected expression before ‘=’ token</span>
     5 | int i[={0}
@@ -146,20 +164,5 @@ programas/array.c:7:3: note: each undeclared identifier is reported only once fo
       | ^
 </pre>
       <a class="download" href="informes/array.txt" download>📥 Descargar informe</a>
-    </div>
-    
-    <div class="card" data-estado="🔍 ">
-      <h2>error.c</h2>
-      <pre>🔍 Revisando programas/error.c...
-❌ Error de compilación
-programas/error.c: In function ‘main’:
-<span class="error">programas/error.c:4:11: error: expected expression before ‘,’ token</span>
-    4 |     int x=,t
-      |           ^
-<span class="warning">programas/error.c:4:9: warning: unused variable ‘x’ [-Wunused-variable]</span>
-    4 |     int x=,t
-      |         ^
-</pre>
-      <a class="download" href="informes/error.txt" download>📥 Descargar informe</a>
     </div>
     </div></body></html>
